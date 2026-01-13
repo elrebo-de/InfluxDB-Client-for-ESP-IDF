@@ -1,8 +1,12 @@
 [![PlatformIO](https://github.com/tobiasschuerg/InfluxDB-Client-for-Arduino/workflows/PlatformIO/badge.svg)](https://github.com/tobiasschuerg/InfluxDB-Client-for-Arduino/actions/)
 
-# InfluxDB Arduino Client
+# InfluxDB Client for ESP-IDF
 
-Simple Arduino client for writing and reading data from [InfluxDB](https://www.influxdata.com/products/influxdb-overview/), no matter whether it is a local server or InfluxDB Cloud. The library supports authentication, secure communication over TLS, [batching](#writing-in-batches), [automatic retrying](#buffer-handling-and-retrying) on server back-pressure and connection failure.
+This fork of https://github.com/tobiasschuerg/InfluxDB-Client-for-Arduino will be used to create an InfluxDB Client for ESP-IDF which does not use the Arduino framework.
+
+This is work-in-progress! (in fact it is not yet started ;-)
+
+Simple ESP-IDF client for writing and reading data from [InfluxDB](https://www.influxdata.com/products/influxdb-overview/), no matter whether it is a local server or InfluxDB Cloud. The library supports authentication, secure communication over TLS, [batching](#writing-in-batches), [automatic retrying](#buffer-handling-and-retrying) on server back-pressure and connection failure.
 
 It also allows setting data in various formats, automatically escapes special characters and offers specifying timestamp in various precisions.
 
