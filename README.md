@@ -4,7 +4,7 @@
 
 This fork of https://github.com/tobiasschuerg/InfluxDB-Client-for-Arduino will be used to create an InfluxDB Client for ESP-IDF which does not use the Arduino framework.
 
-This is work-in-progress! (in fact it is not yet started ;-)
+This is work-in-progress!
 
 Simple ESP-IDF client for writing and reading data from [InfluxDB](https://www.influxdata.com/products/influxdb-overview/), no matter whether it is a local server or InfluxDB Cloud. The library supports authentication, secure communication over TLS, [batching](#writing-in-batches), [automatic retrying](#buffer-handling-and-retrying) on server back-pressure and connection failure.
 
@@ -84,7 +84,7 @@ And finally, write the data to the database:
 client.writePoint(pointDevice);
 ```
 
-Complete source code is available in the [BasicWrite example](examples-Arduino/BasicWrite/BasicWrite.ino).
+Complete source code is available in the [BasicWrite example](examples/BasicWrite/main/main.cpp).
 
 Data can be seen in the InfluxDB UI immediately. Use the [Data Explorer](https://docs.influxdata.com/influxdb/v2.0/query-data/execute-queries/data-explorer/) or create a [Dashboard](https://docs.influxdata.com/influxdb/v2.0/visualize-data/dashboards/).
 
@@ -114,7 +114,7 @@ pointDevice.addField("uptime", millis());
 client.writePoint(pointDevice);
 ```
 
-Complete source code is available in [BasicWrite example](examples-Arduino/BasicWrite/BasicWrite.ino)
+Complete source code is available in [BasicWrite example](examples/BasicWrite/main/main.cpp)
 
 ## Connecting to InfluxDB Cloud 2
 Instead of setting up a local InfluxDB 2 server, it is possible to quickly [start with InfluxDB Cloud 2](https://docs.influxdata.com/influxdb/cloud/get-started/) with a [Free Plan](https://docs.influxdata.com/influxdb/cloud/account-management/pricing-plans/#free-plan).
