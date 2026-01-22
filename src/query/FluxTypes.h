@@ -27,7 +27,7 @@
 #ifndef _FLUX_TYPES_H_
 #define _FLUX_TYPES_H_
 
-#include <Arduino.h>
+#include <NoArduino.h>
 #include <memory>
 
 /** Supported flux types:

@@ -7,10 +7,6 @@
 
 static const char UserAgent[] PROGMEM = "influxdb-client-arduino/" INFLUXDB_CLIENT_VERSION " (" INFLUXDB_CLIENT_PLATFORM " " INFLUXDB_CLIENT_PLATFORM_VERSION ")";
 
-#if defined(ESP8266)         
-bool checkMFLN(BearSSL::WiFiClientSecure  *client, String url);
-#endif
-
 // This cannot be put to PROGMEM due to the way how it is used
 static const char *RetryAfter = "Retry-After";
 const char *TransferEncoding = "Transfer-Encoding";
@@ -18,36 +14,21 @@ const char *TransferEncoding = "Transfer-Encoding";
 HTTPService::HTTPService(ConnectionInfo *pConnInfo):_pConnInfo(pConnInfo) {
   _apiURL = pConnInfo->serverUrl;
   _apiURL += "/api/v2/";
-  bool https = pConnInfo->serverUrl.startsWith("https");
-  if(https) {
-#if defined(ESP8266)         
-    BearSSL::WiFiClientSecure *wifiClientSec = new BearSSL::WiFiClientSecure;
-    if (pConnInfo->insecure) {
-      wifiClientSec->setInsecure();
-    } else if(pConnInfo->certInfo && strlen_P(pConnInfo->certInfo) > 0) {
-      if(strlen_P(pConnInfo->certInfo) > 60 ) { //differentiate fingerprint and cert
-         _cert = new BearSSL::X509List(pConnInfo->certInfo); 
-         wifiClientSec->setTrustAnchors(_cert);
-      } else {
-         wifiClientSec->setFingerprint(pConnInfo->certInfo);
-      }
-    }
-    checkMFLN(wifiClientSec, pConnInfo->serverUrl);
-#elif defined(ESP32)
-    WiFiClientSecure *wifiClientSec = new WiFiClientSecure;  
-    if (pConnInfo->insecure) {
-#ifndef ARDUINO_ESP32_RELEASE_1_0_4
-      // This works only in ESP32 SDK 1.0.5 and higher
-      wifiClientSec->setInsecure();
-#endif            
-    } else if(pConnInfo->certInfo && strlen_P(pConnInfo->certInfo) > 0) { 
-      wifiClientSec->setCACert(pConnInfo->certInfo);
-    }
-#endif    
-    _wifiClient = wifiClientSec;
-  } else {
-    _wifiClient = new WiFiClient;
-  }
+//*****   bool https = pConnInfo->serverUrl.startsWith("https");
+//*****   if(https) {
+//*****     WiFiClientSecure *wifiClientSec = new WiFiClientSecure;
+//*****     if (pConnInfo->insecure) {
+//***** #ifndef ARDUINO_ESP32_RELEASE_1_0_4
+//*****       // This works only in ESP32 SDK 1.0.5 and higher
+//*****       wifiClientSec->setInsecure();
+//***** #endif
+//*****     } else if(pConnInfo->certInfo && strlen_P(pConnInfo->certInfo) > 0) {
+//*****       wifiClientSec->setCACert(pConnInfo->certInfo);
+//*****     }
+//*****     _wifiClient = wifiClientSec;
+//*****   } else {
+//*****     _wifiClient = new WiFiClient;
+//*****   }
   if(!_httpClient) {
     _httpClient = new HTTPClient;
   }
@@ -61,16 +42,10 @@ HTTPService::~HTTPService() {
     delete _httpClient;
     _httpClient = nullptr;
   }
-  if(_wifiClient) {
-    delete _wifiClient;
-    _wifiClient = nullptr;
-  }
-#if defined(ESP8266)     
-  if(_cert) {
-    delete _cert;
-    _cert = nullptr;
-}
-#endif
+//*****   if(_wifiClient) {
+//*****     delete _wifiClient;
+//*****     _wifiClient = nullptr;
+//*****   }
 }
 
 
@@ -86,53 +61,9 @@ void HTTPService::setHTTPOptions() {
 }
 
 // parse URL for host and port and call probeMaxFragmentLength
-#if defined(ESP8266)         
-bool checkMFLN(BearSSL::WiFiClientSecure  *client, String url) {
-    int index = url.indexOf(':');
-     if(index < 0) {
-        return false;
-    }
-    String protocol = url.substring(0, index);
-    int port = -1;
-    url.remove(0, (index + 3)); // remove http:// or https://
-
-    if (protocol == "http") {
-        // set default port for 'http'
-        port = 80;
-    } else if (protocol == "https") {
-        // set default port for 'https'
-        port = 443;
-    } else {
-        return false;
-    }
-    index = url.indexOf('/');
-    String host = url.substring(0, index);
-    url.remove(0, index); // remove host 
-    // check Authorization
-    index = host.indexOf('@');
-    if(index >= 0) {
-        host.remove(0, index + 1); // remove auth part including @
-    }
-    // get port
-    index = host.indexOf(':');
-    if(index >= 0) {
-        String portS = host;
-        host = host.substring(0, index); // hostname
-        portS.remove(0, (index + 1)); // remove hostname + :
-        port = portS.toInt(); // get port
-    }
-    INFLUXDB_CLIENT_DEBUG("[D] probeMaxFragmentLength to %s:%d\n", host.c_str(), port);
-    bool mfln = client->probeMaxFragmentLength(host, port, 1024);
-    INFLUXDB_CLIENT_DEBUG("[D]  MFLN:%s\n", mfln ? "yes" : "no");
-    if (mfln) {
-        client->setBufferSizes(1024, 1024);
-    } 
-    return mfln;
-}
-#endif //ESP8266
 
 bool HTTPService::beforeRequest(const char *url) {
-   if(!_httpClient->begin(*_wifiClient, url)) {
+   if(!_httpClient->begin(url)) {
     _pConnInfo->lastError = F("begin failed");
     return false;
   }
@@ -164,7 +95,7 @@ bool HTTPService::doPOST(const char *url, Stream *stream, const char *contentTyp
   if(contentType) {
     _httpClient->addHeader(F("Content-Type"), FPSTR(contentType));
   }
-  _lastStatusCode = _httpClient->sendRequest("POST", stream, stream->available());
+  _lastStatusCode = _httpClient->sendRequest(HTTP_METHOD_POST, stream, stream->available());
   return afterRequest(expectedCode, cb);
 }
 
@@ -182,7 +113,7 @@ bool HTTPService::doDELETE(const char *url, int expectedCode, httpResponseCallba
   if(!beforeRequest(url)) {
     return false;
   }
-  _lastStatusCode = _httpClient->sendRequest("DELETE");
+  _lastStatusCode = _httpClient->sendRequest(HTTP_METHOD_DELETE);
   return afterRequest(expectedCode, cb, false);
 }
 

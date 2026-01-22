@@ -27,17 +27,10 @@
 #ifndef _HTTP_SERVICE_H_
 #define _HTTP_SERVICE_H_
 
-#include <Arduino.h>
-#if defined(ESP8266)
-# include <WiFiClientSecureBearSSL.h>
-# include <ESP8266HTTPClient.h>
-#elif defined(ESP32)
-# include <HTTPClient.h>
-# include <WiFiClient.h>
-# include <WiFiClientSecure.h>
-#else
-# error "This library currently supports only ESP8266 and ESP32."
-#endif
+#include <NoArduino.h>
+#include <HTTPClient.h>
+//***** #include <WiFiClient.h>
+//***** #include <WiFiClientSecure.h>
 #include "Options.h"
 
 
@@ -85,12 +78,8 @@ friend class Test;
     int _lastStatusCode = 0;
     // Underlying HTTPClient instance 
     HTTPClient *_httpClient = nullptr;
-    // Underlying connection object 
-    WiFiClient *_wifiClient = nullptr;
-#ifdef  ESP8266
-    // Trusted cert chain
-    BearSSL::X509List *_cert = nullptr;   
-#endif
+    // Underlying connection object
+    //***** WiFiClient *_wifiClient = nullptr;
     // Store retry timeout suggested by server after last request
     int _lastRetryAfter = 0;     
    

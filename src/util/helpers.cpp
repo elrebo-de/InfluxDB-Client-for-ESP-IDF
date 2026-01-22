@@ -27,24 +27,24 @@
 #include "helpers.h"
 
 void timeSync(const char *tzInfo, const char* ntpServer1, const char* ntpServer2, const char* ntpServer3) {
-  // Accurate time is necessary for certificate validion
+  // Accurate time is necessary for certificate validation
 
-  configTzTime(tzInfo,ntpServer1, ntpServer2, ntpServer3);
+  // ToDo: find configTzTime
+  // configTzTime(tzInfo,ntpServer1, ntpServer2, ntpServer3);
 
   // Wait till time is synced
-  Serial.print("Syncing time");
+  printf("Syncing time\n");
   int i = 0;
   while (time(nullptr) < 1000000000l && i < 40) {
-    Serial.print(".");
-    delay(500);
+    printf(".");
+    vTaskDelay(pdMS_TO_TICKS(500)); // delay 0.5 seconds
     i++;
   }
-  Serial.println();
+  printf("\n");
 
   // Show time
   time_t tnow = time(nullptr);
-  Serial.print("Synchronized time: ");
-  Serial.println(ctime(&tnow));
+  printf("Synchronized time: %s\n", ctime(&tnow));
 }
 
 unsigned long long getTimeStamp(struct timeval *tv, int secFracDigits) {

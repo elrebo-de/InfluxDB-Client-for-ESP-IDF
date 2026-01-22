@@ -1,0 +1,12 @@
+idf_component_register( SRCS "main.cpp"
+                        INCLUDE_DIRS "."
+                        REQUIRES "elrebo-de__InfluxDB-Client-for-ESP-IDF"
+                                 "78__esp-wifi-connect"
+                                 "sachin42__wstring"
+                                 "driver"
+                                 "mbedtls"
+                                 "esp_driver_gpio"
+                                 "esp_timer"
+                                 "esp_event"
+                                 "nvs_flash"
+                      )

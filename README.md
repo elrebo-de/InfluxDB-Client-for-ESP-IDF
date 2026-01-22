@@ -14,13 +14,12 @@ Library supports both [InfluxDB 2](#basic-code-for-influxdb-2) and [InfluxDB 1](
 
 This is a new implementation and the API, [original API](#original-api) is still supported.
 
+ESP8266 devices are not supported by this component!
+
 Supported devices: 
- - ESP8266 with [Arduino core for ESP8266](https://github.com/esp8266/Arduino) at least version [3.0.2](https://github.com/esp8266/Arduino/releases/tag/3.0.2).
- - ESP32 with [Arduino core for the ESP32](https://github.com/espressif/arduino-esp32) at least version [2.0.2](https://github.com/espressif/arduino-esp32/releases/tag/2.0.2). 
+ - all ESP32 devices supported by ESP-IDF version 5.5.0. 
 
 This library doesn't support using those devices as a peripheral. 
-
-:warning: Only connection over internal WiFi capability is supported for now.
 
 ## Table of contents
 - [InfluxDB Arduino Client](#influxdb-arduino-client)
@@ -85,7 +84,7 @@ And finally, write the data to the database:
 client.writePoint(pointDevice);
 ```
 
-Complete source code is available in the [BasicWrite example](examples/BasicWrite/BasicWrite.ino).
+Complete source code is available in the [BasicWrite example](examples-Arduino/BasicWrite/BasicWrite.ino).
 
 Data can be seen in the InfluxDB UI immediately. Use the [Data Explorer](https://docs.influxdata.com/influxdb/v2.0/query-data/execute-queries/data-explorer/) or create a [Dashboard](https://docs.influxdata.com/influxdb/v2.0/visualize-data/dashboards/).
 
@@ -115,7 +114,7 @@ pointDevice.addField("uptime", millis());
 client.writePoint(pointDevice);
 ```
 
-Complete source code is available in [BasicWrite example](examples/BasicWrite/BasicWrite.ino)
+Complete source code is available in [BasicWrite example](examples-Arduino/BasicWrite/BasicWrite.ino)
 
 ## Connecting to InfluxDB Cloud 2
 Instead of setting up a local InfluxDB 2 server, it is possible to quickly [start with InfluxDB Cloud 2](https://docs.influxdata.com/influxdb/cloud/get-started/) with a [Free Plan](https://docs.influxdata.com/influxdb/cloud/account-management/pricing-plans/#free-plan).
@@ -168,7 +167,7 @@ pointDevice.addField("uptime", millis());
 // Write data
 client.writePoint(pointDevice);
 ```
-Complete source code is available in [SecureWrite example](examples/SecureWrite/SecureWrite.ino).
+Complete source code is available in [SecureWrite example](examples-Arduino/SecureWrite/SecureWrite.ino).
 
 ## Writing in Batches
 InfluxDB client for Arduino can also write data in batches. A batch is simply a set of points that will be sent at once. To create a batch, the client will keep all points until the number of points reaches the batch size and then it will write all points at once to the InfluxDB server. This is often more efficient than writing each point separately.
@@ -323,7 +322,7 @@ Other functions for dealing with buffer:
  - `checkBuffer()` - Checks point buffer status and flushes if the number of points reaches batch size or flush interval runs out. This is the main function for controlling the buffer and it is used internally.
  - `resetBuffer()` - Clears the buffer.
 
-Check [SecureBatchWrite example](examples/SecureBatchWrite/SecureBatchWrite.ino) for example code of buffer handling functions.
+Check [SecureBatchWrite example](examples-Arduino/SecureBatchWrite/SecureBatchWrite.ino) for example code of buffer handling functions.
 
 ## Write Options
 Writing points can be controlled via `WriteOptions`, which is set in the `setWriteOptions` function:
@@ -532,7 +531,7 @@ if(result.getError() != "") {
   Serial.println(result.getError());
 }
 ```
-Complete source code is available in [QueryAggregated example](examples/QueryAggregated/QueryAggregated.ino).
+Complete source code is available in [QueryAggregated example](examples-Arduino/QueryAggregated/QueryAggregated.ino).
 
 ### Parametrized Queries
 InfluxDB Cloud supports [Parameterized Queries](https://docs.influxdata.com/influxdb/cloud/query-data/parameterized-queries/)
@@ -613,7 +612,7 @@ if(result.getError() != "") {
 // Close the result
 result.close();
 ```
-Complete source code is available in [QueryParams example](examples/QueryParams/QueryParams.ino).
+Complete source code is available in [QueryParams example](examples-Arduino/QueryParams/QueryParams.ino).
 
 ## Original API
 

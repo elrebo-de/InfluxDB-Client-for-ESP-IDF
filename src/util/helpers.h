@@ -27,8 +27,11 @@
 #ifndef _INFLUXDB_CLIENT_HELPERS_H
 #define _INFLUXDB_CLIENT_HELPERS_H
 
-#include <Arduino.h>
-#include <sys/time.h>  
+#include <NoArduino.h>
+#include <sys/time.h>
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+
 
 // Synchronize time with NTP servers and waits for completition. Prints waiting progress and final synchronized time to the serial.
 // Accurate time is necessary for certificate validion and writing points in batch

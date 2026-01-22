@@ -27,7 +27,7 @@
 #ifndef _INFLUXDB_CLIENT_DEBUG_H
 #define _INFLUXDB_CLIENT_DEBUG_H
 
-#include <Arduino.h>
+#include <NoArduino.h>
 
 // Uncomment bellow in case of a problem and rebuild sketch
 //#define INFLUXDB_CLIENT_DEBUG_ENABLE

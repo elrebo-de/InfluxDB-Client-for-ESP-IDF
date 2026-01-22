@@ -27,11 +27,7 @@
 #ifndef _HTTP_STREAM_SCANNER_
 #define _HTTP_STREAM_SCANNER_
 
-#if defined(ESP8266)
-# include <ESP8266HTTPClient.h>
-#elif defined(ESP32)
-# include <HTTPClient.h>
-#endif //ESP8266
+#include <HTTPClient.h>
 
 /** 
  * HttpStreamScanner parses response stream from  HTTPClient for lines.

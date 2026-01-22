@@ -27,7 +27,7 @@
 #ifndef _INFLUXDB_CLIENT_H_
 #define _INFLUXDB_CLIENT_H_
 
-#include <Arduino.h>
+#include <NoArduino.h>
 #include "HTTPService.h"
 #include "Point.h"  
 #include "WritePrecision.h"

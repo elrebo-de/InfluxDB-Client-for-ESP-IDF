@@ -24,7 +24,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
 */
-#include <Arduino.h>
+#include <NoArduino.h>
+#include "Print.h"
 #include "Options.h"
 #include "util/helpers.h"
 
@@ -43,14 +44,14 @@ WriteOptions& WriteOptions::addDefaultTag(const String &name, const String &valu
 }
 
 void WriteOptions::printTo(Print &dest) const {
-    dest.println("WriteOptions:");
-    dest.print("\t_precision: "); dest.println((uint8_t)_writePrecision);
-    dest.print("\t_batchSize: "); dest.println(_batchSize);
-    dest.print("\t_bufferSize: "); dest.println(_bufferSize);
-    dest.print("\t_flushInterval: "); dest.println(_flushInterval);
-    dest.print("\t_retryInterval: "); dest.println(_retryInterval);
-    dest.print("\t_maxRetryInterval: "); dest.println(_maxRetryInterval);
-    dest.print("\t_maxRetryAttempts: "); dest.println(_maxRetryAttempts);
-    dest.print("\t_defaultTags: "); dest.println(_defaultTags);
-    dest.print("\t_useServerTimestamp: "); dest.println(_useServerTimestamp);
+    printf("WriteOptions:\n");
+    printf("\t_precision: %u\n",          (uint8_t)_writePrecision);
+    printf("\t_batchSize: %u\n",          _batchSize);
+    printf("\t_bufferSize: %u\n",         _bufferSize);
+    printf("\t_flushInterval: %u\n",      _flushInterval);
+    printf("\t_retryInterval: %u\n",      _retryInterval);
+    printf("\t_maxRetryInterval: %u\n",   _maxRetryInterval);
+    printf("\t_maxRetryAttempts: %u\n",   _maxRetryAttempts);
+    printf("\t_defaultTags: %s\n",        _defaultTags.c_str());
+    printf("\t_useServerTimestamp: %i\n", _useServerTimestamp);
 }

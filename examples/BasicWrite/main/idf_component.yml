@@ -1,0 +1,8 @@
+version: 1.0.0
+dependencies:
+  idf: '>=5.5.0'
+  elrebo-de/InfluxDB-Client-for-ESP-IDF:
+    version: "1.0.0"
+    override_path: '../../../' # three levels up, pointing to the directory with the component itself
+  78/esp-wifi-connect: ^3.0.2
+  sachin42/httpclient: ^1.0.1

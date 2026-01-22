@@ -27,7 +27,7 @@
 #ifndef _POINT_H_
 #define _POINT_H_
 
-#include <Arduino.h>
+#include <NoArduino.h>
 #include "WritePrecision.h"
 #include "util/helpers.h"
 #include <memory>
